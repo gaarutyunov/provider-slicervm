@@ -14,4 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// Package v1alpha1 contains the v1alpha1 group VM resources of the Slicer provider.
+// +kubebuilder:object:generate=true
+// +groupName=vm.slicervm.crossplane.io
+// +versionName=v1alpha1
 package v1alpha1

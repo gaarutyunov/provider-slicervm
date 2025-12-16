@@ -1,0 +1,66 @@
+---
+# Basic VM example
+apiVersion: vm.slicervm.crossplane.io/v1alpha1
+kind: VM
+metadata:
+  name: basic-vm
+  namespace: default
+spec:
+  forProvider:
+    cpus: 2
+    ramGb: 4
+    tags:
+      - crossplane
+      - example
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+  writeConnectionSecretToRef:
+    name: basic-vm-connection
+---
+# VM with custom userdata
+apiVersion: vm.slicervm.crossplane.io/v1alpha1
+kind: VM
+metadata:
+  name: custom-vm
+  namespace: default
+spec:
+  forProvider:
+    cpus: 4
+    ramGb: 8
+    hostGroup: "api"
+    importUser: "your-github-username"
+    userdata: |
+      #!/bin/bash
+      echo "Hello from Crossplane-managed VM!"
+      apt update -y
+      apt install -y curl
+    tags:
+      - crossplane
+      - custom
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+  writeConnectionSecretToRef:
+    name: custom-vm-connection
+---
+# VM with SSH keys
+apiVersion: vm.slicervm.crossplane.io/v1alpha1
+kind: VM
+metadata:
+  name: ssh-vm
+  namespace: default
+spec:
+  forProvider:
+    cpus: 2
+    ramGb: 4
+    sshKeys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIExample user@example.com"
+    tags:
+      - crossplane
+      - ssh
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: default
+  writeConnectionSecretToRef:
+    name: ssh-vm-connection

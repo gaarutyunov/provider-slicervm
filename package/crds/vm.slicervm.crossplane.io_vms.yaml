@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.18.0
-  name: mytypes.sample.template.crossplane.io
+  name: vms.vm.slicervm.crossplane.io
 spec:
-  group: sample.template.crossplane.io
+  group: vm.slicervm.crossplane.io
   names:
     categories:
     - crossplane
     - managed
-    - template
-    kind: MyType
-    listKind: MyTypeList
-    plural: mytypes
-    singular: mytype
+    - slicervm
+    kind: VM
+    listKind: VMList
+    plural: vms
+    singular: vm
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
@@ -28,13 +28,19 @@ spec:
     - jsonPath: .metadata.annotations.crossplane\.io/external-name
       name: EXTERNAL-NAME
       type: string
+    - jsonPath: .status.atProvider.hostname
+      name: HOSTNAME
+      type: string
+    - jsonPath: .status.atProvider.ip
+      name: IP
+      type: string
     - jsonPath: .metadata.creationTimestamp
       name: AGE
       type: date
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: A MyType is an example API type.
+        description: A VM is a managed resource that represents a Slicer VM.
         properties:
           apiVersion:
             description: |-
@@ -54,15 +60,44 @@ spec:
           metadata:
             type: object
           spec:
-            description: A MyTypeSpec defines the desired state of a MyType.
+            description: A VMSpec defines the desired state of a Slicer VM.
             properties:
               forProvider:
-                description: MyTypeParameters are the configurable fields of a MyType.
+                description: VMParameters are the configurable fields of a Slicer
+                  VM.
                 properties:
-                  configurableField:
+                  cpus:
+                    default: 2
+                    description: CPUs is the number of virtual CPUs for the VM.
+                    type: integer
+                  hostGroup:
+                    description: |-
+                      HostGroup is the host group to create the VM in.
+                      If not specified, the default host group from the ProviderConfig is used.
                     type: string
-                required:
-                - configurableField
+                  importUser:
+                    description: ImportUser is a GitHub username to import SSH keys
+                      from.
+                    type: string
+                  ramGb:
+                    default: 4
+                    description: RAMGB is the amount of RAM in GB for the VM.
+                    type: integer
+                  sshKeys:
+                    description: SSHKeys is a list of SSH public keys to add to the
+                      VM.
+                    items:
+                      type: string
+                    type: array
+                  tags:
+                    description: Tags are labels to apply to the VM.
+                    items:
+                      type: string
+                    type: array
+                  userdata:
+                    description: Userdata is the cloud-init userdata script to run
+                      on boot.
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -123,17 +158,23 @@ spec:
             - forProvider
             type: object
           status:
-            description: A MyTypeStatus represents the observed state of a MyType.
+            description: A VMStatus represents the observed state of a Slicer VM.
             properties:
               atProvider:
-                description: MyTypeObservation are the observable fields of a MyType.
+                description: VMObservation are the observable fields of a Slicer VM.
                 properties:
-                  configurableField:
+                  createdAt:
+                    description: CreatedAt is the creation timestamp of the VM.
                     type: string
-                  observableField:
+                  hostname:
+                    description: Hostname is the hostname of the VM.
                     type: string
-                required:
-                - configurableField
+                  ip:
+                    description: IP is the IP address of the VM.
+                    type: string
+                  state:
+                    description: State is the current state of the VM.
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

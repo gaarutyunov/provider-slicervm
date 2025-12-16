@@ -22,7 +22,18 @@ type ProviderCredentials struct {
 
 type ProviderConfigSpec struct {
 	// Credentials required to authenticate to this provider.
+	// The credentials should contain a "token" key with the Slicer API token.
 	Credentials ProviderCredentials `json:"credentials"`
+
+	// URL is the Slicer API endpoint URL.
+	// +kubebuilder:default="http://127.0.0.1:8080"
+	// +optional
+	URL string `json:"url,omitempty"`
+
+	// HostGroup is the default host group for VM operations.
+	// +kubebuilder:default="api"
+	// +optional
+	HostGroup string `json:"hostGroup,omitempty"`
 }
 
 // +kubebuilder:object:root=true

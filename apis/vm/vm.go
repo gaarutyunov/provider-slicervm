@@ -14,22 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Package apis contains Kubernetes API for the Slicer provider.
-package apis
+// Package vm contains Slicer VM API versions.
+package vm
 
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	slicervmv1alpha1 "github.com/gaarutyunov/provider-slicervm/apis/v1alpha1"
 	vmv1alpha1 "github.com/gaarutyunov/provider-slicervm/apis/vm/v1alpha1"
 )
 
 func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
-	AddToSchemes = append(AddToSchemes,
-		slicervmv1alpha1.SchemeBuilder.AddToScheme,
-		vmv1alpha1.SchemeBuilder.AddToScheme,
-	)
+	AddToSchemes = append(AddToSchemes, vmv1alpha1.SchemeBuilder.AddToScheme)
 }
 
 // AddToSchemes may be used to add all resources defined in the project to a Scheme
