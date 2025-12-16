@@ -34,8 +34,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/gaarutyunov/provider-slicervm/apis/vm/v1alpha1"
 	apisv1alpha1 "github.com/gaarutyunov/provider-slicervm/apis/v1alpha1"
+	"github.com/gaarutyunov/provider-slicervm/apis/vm/v1alpha1"
 )
 
 const (
