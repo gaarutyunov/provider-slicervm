@@ -190,11 +190,6 @@ func (e *external) Observe(ctx context.Context, mg resource.Managed) (managed.Ex
 		return managed.ExternalObservation{}, errors.New(errNotVM)
 	}
 
-	// If marked for deletion, report as non-existent to trigger Delete
-	if meta.WasDeleted(mg) {
-		return managed.ExternalObservation{ResourceExists: false}, nil
-	}
-
 	// Get external name (hostname)
 	externalName := meta.GetExternalName(cr)
 	if externalName == "" {
